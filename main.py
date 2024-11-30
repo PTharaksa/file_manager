@@ -12,9 +12,10 @@ def print_currdir():
      print(current)
 
 def change_dir():
-     current = os.chdir("../")
-     path = os.getcwd().split("\\")[-1]
-     print(path)
+    current = os.chdir("../")
+    path = os.getcwd().split("\\")[-1]
+    print(path)
+
 
 def print_fileList():
     fileList = os.listdir()
@@ -92,6 +93,22 @@ def rename_fileDirectory(command):
     except:
         print("Specify the current name of the file or directory and the new name") # error handling bug
 
+def copy_file(command):
+    part = command.split(" ")
+    current = os.getcwd()
+    if len(part) == 3:
+        cm, org, copy = part[0], part[1], part[2]
+        if not os.path.exists(org):
+            print("No such file or directory")
+        if os.path.exists(copy):
+            print(f"{copy} already exists in this directory")
+        source_path = os.path.join(current, org)
+        destination_path = os.path.join(current, copy)
+        os.system(f"copy {source_path} {destination_path}")
+    elif len(part) == 1:
+        print("Specify the file")
+    else:
+        print("Specify the current name of the file or directory and the new location and/or name")
 
 while(user_input() != "quit"):
       command = user_input()
@@ -111,5 +128,7 @@ while(user_input() != "quit"):
         remove_fileDirectory(command)
       elif re.match("^mv", command):
         rename_fileDirectory(command)
+      elif re.match("^cp", command):
+        copy_file(command)
       else:
         print("Invalid Command")
